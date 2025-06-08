@@ -1,19 +1,21 @@
 from django.db import models
+from socios.models import Socio
+from Libro.models import Libro
 
-class prestamo (models.Model):
-    libro_id= models.IntegerField()
-    socio_id = models.IntegerField()
-    prestamo_id= models.AutoField(primary_key=True)
-    fecha_pretamo=models.DateField(auto_now_add=True)
-    fecha_devolucion= models.DateField()
-    fecha_limite=models.DateField()
-    costo= models.DecimalField( max_digits=10, decimal_places=2)
-    
 
-    class Meta:
-        db_table='prestamo'
+class Prestamo(models.Model):
+    id = models.AutoField(primary_key=True)
+    libro = models.ForeignKey(Libro, on_delete=models.CASCADE, null=True, blank=True)
+    socio = models.ForeignKey(Socio, on_delete=models.CASCADE, null=True, blank=True)
+    fecha_pretamo = models.DateField(auto_now_add=True)
+    fecha_devolucion = models.DateField()
+    fecha_limite = models.DateField()
+    # costo = models.DecimalField(max_digits=10, decimal_places=2)
+
+    # class Meta:
+    #     db_table = "prestamo"
 
     def __str__(self):
-        return f"prestamo #{self.prestamo_id} - libro {self.libro_id} a socio {self.socio_id}"
-
-
+        libro_str = self.libro.titulo if self.libro else "Libro no asignado"
+        socio_str = self.socio.nombre if self.socio else "Socio no asignado"
+        return f"Préstamo: '{libro_str}' a {socio_str} (Devolución: {self.fecha_devolucion})"

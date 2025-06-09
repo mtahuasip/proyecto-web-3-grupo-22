@@ -29,7 +29,7 @@ def editar_multa(request, id):
         if form.is_valid():
             form.save()
             messages.success(request, "Multa actualizada correctamente.")
-            return redirect('lista_multas')
+            return readirect('lista_multas')
     else:
         form = MultaForm(instance=multa)
     return render(request, 'multa/formulario_multa.html', {'form': form, 'accion': 'Editar'})

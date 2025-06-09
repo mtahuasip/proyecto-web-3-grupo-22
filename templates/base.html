@@ -54,7 +54,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#">
+              <a class="nav-link text-white" href="{%url 'lista_libros'%}">
                 <i class="fa-solid fa-book"></i> Catálogo
               </a>
             </li>
@@ -64,7 +64,12 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="btn btn-light btn-sm" href="#">
+              <a class="nav-link text-white" href="{% url 'lista_multas'%}">
+                <i class="fa-solid fa-exclamation-triangle"></i> Multa
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-light btn-sm" href="{% url 'registro_socio'%}">
                 <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
               </a>
             </li>

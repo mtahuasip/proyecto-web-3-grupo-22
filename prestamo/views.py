@@ -1,3 +1,46 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import Prestamo
+from .forms import PrestamoForm
 
-# Create your views here.
+def listar_prestamo(request):
+    prestamos = Prestamo.objects.all()
+    return render(request, 'prestamo/lista_prestamo.html', {'prestamos': prestamos})
+
+def detalle_prestamo(request, prestamo_id):
+    prestamo = get_object_or_404(Prestamo, pk=prestamo_id)
+    return render(request, 'prestamo/detalle_prestamo.html', {'prestamo': prestamo})
+
+def agregar_prestamo(request):
+    if request.method == "POST":
+        form = PrestamoForm(request.POST)
+        if form.is_valid():
+            prestamo = form.save(commit=False)
+            prestamo.save()
+            messages.success(request, "Préstamo agregado correctamente.")
+            return redirect('listar_prestamo')
+    else:
+        form = PrestamoForm()
+    return render(request, 'prestamo/formulario_prestamo.html', {'form': form})
+
+def editar_prestamo(request, prestamo_id):
+    prestamo = get_object_or_404(Prestamo, pk=prestamo_id)
+    if request.method == "POST":
+        form = PrestamoForm(request.POST, instance=prestamo)
+        if form.is_valid():
+            prestamo = form.save(commit=False)
+            prestamo.save()
+            messages.success(request, "Préstamo actualizado correctamente.")
+            return redirect('listar_prestamo')
+    else:
+        form = PrestamoForm(instance=prestamo)
+    return render(request, 'prestamo/formulario_prestamo.html', {'form': form})
+
+def eliminar_prestamo(request, prestamo_id):
+    prestamo = get_object_or_404(Prestamo, pk=prestamo_id)
+    if request.method == "POST":
+        prestamo.delete()
+        messages.success(request, "Préstamo eliminado correctamente.")
+        return redirect('listar_prestamo')
+    
+    return render(request, 'prestamo/eliminar_prestamo.html', {'prestamo': prestamo})

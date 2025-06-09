@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Eliminar Préstamo{% endblock %}
+
+{% block content %}
+<h2>Eliminar Préstamo</h2>
+<p>Estás a punto de eliminar el siguiente préstamo:</p>
+<ul class="list-group">
+    <li class="list-group-item"><strong>ID del Préstamo:</strong> {{ prestamo.prestamo_id }}</li>
+    <li class="list-group-item"><strong>Libro:</strong> {{ prestamo.libro.titulo }}</li>
+    <li class="list-group-item"><strong>Socio:</strong> {{ prestamo.socio }}</li>
+    <li class="list-group-item"><strong>Fecha de Devolución:</strong> {{ prestamo.fecha_devolucion }}</li>
+    <li class="list-group-item"><strong>Fecha Límite:</strong> {{ prestamo.fecha_limite }}</li>
+</ul>
+<form method="post" class="mt-4">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+    <a href="{% url 'listar_prestamo' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

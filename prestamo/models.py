@@ -14,6 +14,8 @@ class Prestamo(models.Model):
 
     # class Meta:
     #     db_table = "prestamo"
+    def calcular_costo(self):
+        return self.libro.precio
 
     def __str__(self):
         libro_str = self.libro.titulo if self.libro else "Libro no asignado"

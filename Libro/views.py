@@ -35,9 +35,11 @@ def editar_libro(request, id):
     return render(request, "libro/formulario_libro.html", {'form': form, 'accion': 'Editar'})
 
 def eliminar_libro(request, id):
-    libro = get_object_or_404(Libro, pk=id)
+    libro = get_object_or_404(Libro, id=id)
+    
     if request.method == 'POST':
         libro.delete()
-        messages.success(request, "Libro eliminado.")
         return redirect('lista_libros')
-    return render(request, "libro/confirmar_eliminacion.html", {'libro': libro})
+
+    return render(request, 'confirmar_eliminacion_libro.html', {'libro': libro})
+

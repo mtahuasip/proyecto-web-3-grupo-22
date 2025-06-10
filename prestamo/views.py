@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Prestamo
 from .forms import PrestamoForm
+from datetime import date
 
 def listar_prestamo(request):
     prestamos = Prestamo.objects.all()
@@ -44,3 +45,12 @@ def eliminar_prestamo(request, prestamo_id):
         return redirect('listar_prestamo')
     
     return render(request, 'prestamo/eliminar_prestamo.html', {'prestamo': prestamo})
+
+def devolver_prestamo(request, prestamo_id):
+    prestamo = get_object_or_404(Prestamo, pk=prestamo_id)
+    if request.method == "POST":
+        prestamo.fecha_devolucion = request.POST.get('fecha_devolucion') or date.today()
+        prestamo.save()
+        messages.success(request, "El libro ha sido devuelto correctamente.")
+        return redirect('detalle_prestamo', prestamo_id=prestamo.id)
+    return render(request, 'prestamo/devolver_prestamo.html', {'prestamo': prestamo})

@@ -14,18 +14,18 @@
         <label for="id_socio_id" class="form-label">ID del Socio</label>
         {{ form.socio_id }}
     </div>
-    <div class="mb-3">
+    {% comment "" %}<div class="mb-3">
         <label for="id_fecha_devolucion" class="form-label">Fecha de Devolución</label>
         {{ form.fecha_devolucion }}
-    </div>
+    </div>{% endcomment %}
     <div class="mb-3">
         <label for="id_fecha_limite" class="form-label">Fecha Límite</label>
         {{ form.fecha_limite }}
     </div>
-    <div class="mb-3">
+    {% comment "" %}<div class="mb-3">
         <label for="id_costo" class="form-label">Costo</label>
         {{ form.costo }}
-    </div>
+    </div>{% endcomment %}
     <button type="submit" class="btn btn-success">Guardar</button>
     <a href="{% url 'listar_prestamo' %}" class="btn btn-secondary">Cancelar</a>
 </form>

@@ -9,9 +9,16 @@
 <p><strong>Precio:</strong> {{ prestamo.libro.precio }} Bs.</p>
 <p><strong>Socio (ID):</strong> {{ prestamo.socio.id }}</p>
 <p><strong>Socio (Detalles):</strong> {{ prestamo.socio }}</p>
-<p><strong>Fecha de Préstamo:</strong> {{ prestamo.fecha_prestamo }}</p>
-<p><strong>Fecha de Devolución:</strong> {{ prestamo.fecha_devolucion }}</p>
+<p><strong>Fecha de Préstamo:</strong> {{ prestamo.fecha_pretamo }}</p>
 <p><strong>Fecha Límite:</strong> {{ prestamo.fecha_limite }}</p>
-<p><strong>Costo calculado:</strong> {{ prestamo.calcular_costo }} Bs.</p>
-<a href="{% url 'listar_prestamo' %}" class="btn btn-secondary">Volver</a>
+<p><strong>Costo del Libro:</strong> {{ prestamo.calcular_costo }} Bs.</p>
+
+{% if prestamo.fecha_devolucion %}
+    <p><strong>Fecha de Devolución:</strong> {{ prestamo.fecha_devolucion }}</p>
+    <button class="btn btn-secondary" disabled>Cancelado</button>
+{% else %}
+    <a href="{% url 'devolver_prestamo' prestamo.id %}" class="btn btn-warning">Registrar Devolución</a>
+{% endif %}
+
+<a href="{% url 'listar_prestamo' %}" class="btn btn-secondary mt-3">Volver</a>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Multa
+from fine.models import Multa
 from .forms import MultaForm  
 from django.contrib import messages
 

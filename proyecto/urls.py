@@ -24,8 +24,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("libros/", include("Libro.urls")),
     path("socios/", include("socios.urls")),
-    path('prestamos/', include('prestamo.urls')),
-    path("multas/", include("Multa.urls")),
+    path("prestamos/", include("prestamo.urls")),
+    path("multas/", include("fine.urls")),
+    path("", include("principal.urls")),
 ]
 
 if settings.DEBUG:

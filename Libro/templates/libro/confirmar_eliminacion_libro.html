@@ -1,13 +1,11 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base_admin.html" %} {% block content %}
 <div class="container mt-4">
-    <h3>¿Estás seguro que deseas eliminar el libro "{{ libro.titulo }}"?</h3>
+  <h3>¿Estás seguro que deseas eliminar el libro "{{ libro.titulo }}"?</h3>
 
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
-        <a href="{% url 'lista_libros' %}" class="btn btn-secondary">Cancelar</a>
-    </form>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a href="{% url 'lista_libros' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
 </div>
 {% endblock %}

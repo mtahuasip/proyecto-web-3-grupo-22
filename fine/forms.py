@@ -1,5 +1,5 @@
 from django import forms
-from .models import Multa
+from fine.models import Multa
 
 class MultaForm(forms.ModelForm):
     class Meta:

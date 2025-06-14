@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MultaConfig(AppConfig):
+class PrincipalConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'Multa'
+    name = 'principal'

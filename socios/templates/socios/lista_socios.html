@@ -38,14 +38,22 @@
               <i class="fa-solid fa-ellipsis-vertical"></i>
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li>
+                <a class="dropdown-item" href="#">
+                  <i class="fa-solid fa-eye me-2 text-primary"></i>Ver
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">
+                  <i class="fa-solid fa-pencil me-2 text-warning"></i>Editar
+                </a>
+              </li>
               <li>
                 <a
                   href="{% url 'eliminar_socio' socio.id %}"
                   class="dropdown-item btn-eliminar"
                 >
-                  Eliminar
+                  <i class="fa-solid fa-trash me-2 text-danger"></i>Eliminar
                 </a>
               </li>
             </ul>

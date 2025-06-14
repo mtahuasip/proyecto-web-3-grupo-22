@@ -1,47 +1,124 @@
-{% extends "base_admin.html" %} {% block title %}Lista de Préstamos{% endblock%}
-{% block content %}
-<h2>Lista de Préstamos</h2>
-<a href="{% url 'agregar_prestamo' %}" class="btn btn-primary mb-3"
-  >Agregar Préstamo</a
->
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Libro</th>
-      <th>Socio (ID)</th>
-      <th>Fecha de Devolución</th>
-      <th>Fecha Límite</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for prestamo in prestamos %}
-    <tr>
-      <td>{{ prestamo.prestamo_id }}</td>
-      <td>{{ prestamo.libro.titulo }}</td>
-      <td>{{ prestamo.socio.id }}</td>
-      <td>{{ prestamo.fecha_devolucion }}</td>
-      <td>{{ prestamo.fecha_limite }}</td>
-      <td>
-        <a
-          href="{% url 'detalle_prestamo' prestamo.prestamo_id %}"
-          class="btn btn-info btn-sm"
-          >Ver</a
-        >
-        <a
-          href="{% url 'editar_prestamo' prestamo.prestamo_id %}"
-          class="btn btn-warning btn-sm"
-          >Editar</a
-        >
-        <a
-          href="{% url 'eliminar_prestamo' prestamo.prestamo_id %}"
-          class="btn btn-danger btn-sm"
-          >Eliminar</a
-        >
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% extends "base_admin.html" %} {% block title %}Lista de Préstamos |
+Bookify{%endblock%} {% block content %}
+
+<section class="container ps-4 pe-4 pt-2">
+  <header class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fs-3">Lista de Préstamos</h2>
+    <a href="{% url 'agregar_prestamo' %}" class="btn btn-primary"
+      >Agregar Préstamo</a
+    >
+  </header>
+
+  <table id="prestamo" class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Libro</th>
+        <th>Socio (ID)</th>
+        <th>Fecha de Devolución</th>
+        <th>Fecha Límite</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for prestamo in prestamos %}
+      <tr>
+        <td>{{ prestamo.prestamo_id }}</td>
+        <td>{{ prestamo.libro.titulo }}</td>
+        <td>{{ prestamo.socio.id }}</td>
+        <td>{{ prestamo.fecha_devolucion }}</td>
+        <td>{{ prestamo.fecha_limite }}</td>
+        <td class="text-center">
+          <div class="dropdown">
+            <a
+              href="#"
+              class="link-body-emphasis text-decoration-none dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a
+                  class="dropdown-item"
+                  h
+                  href="{% url 'detalle_prestamo' prestamo.id %}"
+                >
+                  <i class="fa-solid fa-eye me-2 text-primary"></i>Ver
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="{% url 'editar_prestamo' prestamo.id %}"
+                >
+                  <i class="fa-solid fa-pencil me-2 text-warning"></i>Editar
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="{% url 'eliminar_prestamo' prestamo.id %}"
+                  class="dropdown-item btn-eliminar"
+                >
+                  <i class="fa-solid fa-trash me-2 text-danger"></i>Eliminar
+                </a>
+              </li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<script>
+  $(document).ready(function () {
+    $("#prestamo").DataTable({
+      language: {
+        url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+      },
+    });
+
+    $(".btn-eliminar").on("click", function (e) {
+      e.preventDefault();
+
+      const url = $(this).attr("href");
+
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción eliminará permanentemente el préstamo.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Eliminado",
+            text: "El préstamo ha sido eliminado correctamente.",
+            icon: "success",
+            timer: 5000,
+            showConfirmButton: true,
+          }).then(() => {
+            window.location.href = url;
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire({
+            title: "Cancelado",
+            text: "La eliminación ha sido cancelada.",
+            icon: "info",
+            timer: 5000,
+            showConfirmButton: true,
+          });
+        }
+      });
+    });
+  });
+</script>
+
 {% endblock %}

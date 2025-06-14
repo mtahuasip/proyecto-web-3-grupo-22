@@ -1,0 +1,135 @@
+{% extends 'base_public.html' %} {% block title %} Bookify | Biblioteca digital
+{% endblock %} {% block content %}
+
+<header class="bg-primary text-white text-center py-5 rounded">
+  <div class="container rounded">
+    <h1 class="display-4">Sistema de Préstamos de Biblioteca</h1>
+    <p class="lead">
+      Gestión eficiente de libros y préstamos para bibliotecas académicas
+    </p>
+    <button class="btn btn-light btn-lg">Ver catalogo</button>
+  </div>
+</header>
+
+<section class="py-4">
+  <div class="container">
+    <h2 class="text-center mb-2">Bienvenido a Bookify</h2>
+    <p class="text-center mb-4">
+      Selecciona tu tipo de acceso para ingresar al sistema
+    </p>
+
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm text-center">
+          <div class="card-body">
+            <div
+              class="bg-primary-subtle rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+              style="width: 80px; height: 80px"
+            >
+              <i class="fas fa-user fa-3x text-primary"></i>
+            </div>
+            <h5 class="card-title">Administrativo</h5>
+            <p>Registro, gestión y asignación de roles a socios y usuarios.</p>
+            <a href="/admin" class="btn btn-primary">Ingresar</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm text-center">
+          <div class="card-body">
+            <div
+              class="bg-primary-subtle rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+              style="width: 80px; height: 80px"
+            >
+              <i class="fa-solid fa-3x fa-address-card text-primary"></i>
+            </div>
+            <h5 class="card-title">Socio</h5>
+            <p>Préstamo de libros y seguimiento de libros prestados.</p>
+            <a href="{% url 'registro_socio' %}" class="btn btn-primary">
+              Ingresar
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-2">
+  <div class="container">
+    <h2 class="text-center mb-4">Características Principales</h2>
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-book me-2 text-primary"></i>Gestión de Libros
+            </h5>
+            <p class="card-text">
+              Registro, disponibilidad y control de inventario bibliográfico.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-user-cog me-2 text-primary"></i>Administración de
+              Usuarios
+            </h5>
+            <p class="card-text">
+              Registro, gestión y asignación de roles a socios y usuarios.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-exchange-alt me-2 text-primary"></i>Préstamos y
+              Devoluciones
+            </h5>
+            <p class="card-text">
+              Control de fechas, renovaciones y seguimiento automático.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-money-bill-wave me-2 text-primary"></i>Módulo de
+              Multas
+            </h5>
+            <p class="card-text">
+              Penalizaciones automáticas por retrasos en las devoluciones.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-chart-bar me-2 text-primary"></i>Reportes y
+              Estadísticas
+            </h5>
+            <p class="card-text">
+              Visualización de uso del sistema, historial de préstamos y
+              comportamiento de usuarios.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

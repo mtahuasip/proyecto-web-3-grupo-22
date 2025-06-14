@@ -1,42 +1,52 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base_admin.html" %} {% block content %}
 <div class="container mt-5">
-    <h2>Multas Registradas</h2>
-    <a href="{% url 'crear_multa' %}" class="btn btn-primary mb-3">Crear Multa</a>
+  <h2>Multas Registradas</h2>
+  <a href="{% url 'crear_multa' %}" class="btn btn-primary mb-3">Crear Multa</a>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>N°</th>
-                <th>Socio</th>
-                <th>Préstamo</th>
-                <th>Costo Adicional</th>
-                <th>Observación</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for multa in multas %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ multa.socio.nombre }}</td>
-                <td>{{ multa.prestamo.id }}</td>
-                <td>${{ multa.costo_adicional }}</td>
-                <td>{{ multa.observacion }}</td>
-                <td>
-                    <a href="{% url 'editar_multa' multa.id %}" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="{% url 'eliminar_multa' multa.id %}" class="btn btn-danger btn-sm"
-                       onclick="return confirm('¿Deseas eliminar esta multa?');">Eliminar</a>
-                    <a href="{% url 'detalle_multa' multa.id %}" class="btn btn-info btn-sm">Ver</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" class="text-center">No hay multas registradas.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Socio</th>
+        <th>Préstamo</th>
+        <th>Costo Adicional</th>
+        <th>Observación</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for multa in multas %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ multa.socio.nombre }}</td>
+        <td>{{ multa.prestamo.id }}</td>
+        <td>${{ multa.costo_adicional }}</td>
+        <td>{{ multa.observacion }}</td>
+        <td>
+          <a
+            href="{% url 'editar_multa' multa.id %}"
+            class="btn btn-warning btn-sm"
+            >Editar</a
+          >
+          <a
+            href="{% url 'eliminar_multa' multa.id %}"
+            class="btn btn-danger btn-sm"
+            onclick="return confirm('¿Deseas eliminar esta multa?');"
+            >Eliminar</a
+          >
+          <a
+            href="{% url 'detalle_multa' multa.id %}"
+            class="btn btn-info btn-sm"
+            >Ver</a
+          >
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center">No hay multas registradas.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}

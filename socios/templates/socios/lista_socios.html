@@ -1,38 +1,107 @@
-{% extends "base.html" %}
+{% extends "base_admin.html" %} {% block title %} Socios Registrados | Bookify
+{%endblock %} {% block content %}
+<section class="container ps-4 pe-4 pt-2">
+  <header class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fs-3">Socios Registrados</h2>
 
-{% block content %}
-<div class="container mt-5">
-    <h2>Socios Registrados</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>N</th>
-                <th>Nombre</th>
-                <th>CI</th>
-                <th>Dirección</th>
-                <th>Correo</th>
-                <th>Celular</th>
-                <th>Cancelar Suscripción</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for socio in socios %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ socio.nombre }}</td>
-                <td>{{ socio.ci }}</td>
-                <td>{{ socio.direccion }}</td>
-                <td>{{ socio.correo }}</td>
-                <td>{{ socio.celular }}</td>
-                <td>
-                    <a href="{% url 'eliminar_socio' socio.id %}" class="btn btn-danger btn-sm"
-                    onclick="return confirm('¿Estás seguro de que deseas eliminar este socio?');">
-                        Eliminar
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+    <a href="{% url 'registro_socio' %}" class="btn btn-primary">Crear socio</a>
+  </header>
+  <table id="socios" class="table table-striped">
+    <thead>
+      <tr>
+        <th>N</th>
+        <th>Nombre</th>
+        <th>CI</th>
+        <th>Dirección</th>
+        <th>Correo</th>
+        <th>Celular</th>
+        <th class="text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for socio in socios %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ socio.nombre }}</td>
+        <td>{{ socio.ci }}</td>
+        <td>{{ socio.direccion }}</td>
+        <td>{{ socio.correo }}</td>
+        <td>{{ socio.celular }}</td>
+        <td class="text-center">
+          <div class="dropdown">
+            <a
+              href="#"
+              class="link-body-emphasis text-decoration-none dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li>
+                <a
+                  href="{% url 'eliminar_socio' socio.id %}"
+                  class="dropdown-item btn-eliminar"
+                >
+                  Eliminar
+                </a>
+              </li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<script>
+  $(document).ready(function () {
+    $("#socios").DataTable({
+      language: {
+        url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+      },
+    });
+
+    $(".btn-eliminar").on("click", function (e) {
+      e.preventDefault();
+
+      const url = $(this).attr("href");
+
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción eliminará permanentemente al socio.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Eliminado",
+            text: "El socio ha sido eliminado correctamente.",
+            icon: "success",
+            timer: 5000,
+            showConfirmButton: true,
+          }).then(() => {
+            window.location.href = url;
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire({
+            title: "Cancelado",
+            text: "La eliminación ha sido cancelada.",
+            icon: "info",
+            timer: 5000,
+            showConfirmButton: true,
+          });
+        }
+      });
+    });
+  });
+</script>
+
 {% endblock %}

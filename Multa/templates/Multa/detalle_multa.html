@@ -1,14 +1,22 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base_admin.html" %} {% block content %}
 <div class="container mt-5">
-    <h2>Detalle de Multa #{{ multa.multa_ID }}</h2>
-    <ul class="list-group mb-3">
-        <li class="list-group-item"><strong>Socio:</strong> {{ multa.socio.nombre }}</li>
-        <li class="list-group-item"><strong>Préstamo:</strong> {{ multa.prestamo.id }}</li>
-        <li class="list-group-item"><strong>Costo adicional:</strong> ${{ multa.costo_adicional }}</li>
-        <li class="list-group-item"><strong>Observación:</strong> {{ multa.observacion }}</li>
-    </ul>
-    <a href="{% url 'lista_multas' %}" class="btn btn-primary">Volver a la lista</a>
+  <h2>Detalle de Multa #{{ multa.multa_ID }}</h2>
+  <ul class="list-group mb-3">
+    <li class="list-group-item">
+      <strong>Socio:</strong> {{ multa.socio.nombre }}
+    </li>
+    <li class="list-group-item">
+      <strong>Préstamo:</strong> {{ multa.prestamo.id }}
+    </li>
+    <li class="list-group-item">
+      <strong>Costo adicional:</strong> ${{ multa.costo_adicional }}
+    </li>
+    <li class="list-group-item">
+      <strong>Observación:</strong> {{ multa.observacion }}
+    </li>
+  </ul>
+  <a href="{% url 'lista_multas' %}" class="btn btn-primary"
+    >Volver a la lista</a
+  >
 </div>
 {% endblock %}

@@ -45,11 +45,14 @@
                   <i class="fa-solid fa-eye me-2 text-primary"></i>Ver
                 </a>
               </li>
+
+              {% if user.is_staff %}
               <li>
                 <a href="{% url 'eliminar_multa' multa.id %}" class="dropdown-item btn-eliminar">
                   <i class="fa-solid fa-trash me-2 text-danger"></i>Eliminar
                 </a>
               </li>
+              {% endif %}
             </ul>
           </div>
         </td>

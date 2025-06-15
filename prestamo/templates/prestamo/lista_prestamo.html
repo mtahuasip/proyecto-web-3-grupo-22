@@ -76,50 +76,58 @@ Bookify{%endblock%} {% block content %}
 </section>
 
 <script>
-  $(document).ready(function () {
-    $("#prestamo").DataTable({
-      language: {
-        url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
-      },
-    });
+ $(document).ready(function () {
+  $("#prestamo").DataTable({
+    language: {
+      url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+    },
+  });
 
-    $(".btn-eliminar").on("click", function (e) {
-      e.preventDefault();
+  $(".btn-eliminar").on("click", function (e) {
+    e.preventDefault();
 
-      const url = $(this).attr("href");
+    const url = $(this).attr("href");
 
-      Swal.fire({
-        title: "¿Estás seguro?",
-        text: "Esta acción eliminará permanentemente el préstamo.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#6c757d",
-        confirmButtonText: "Sí, eliminar",
-        cancelButtonText: "Cancelar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: "Eliminado",
-            text: "El préstamo ha sido eliminado correctamente.",
-            icon: "success",
-            timer: 5000,
-            showConfirmButton: true,
-          }).then(() => {
-            window.location.href = url;
-          });
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire({
-            title: "Cancelado",
-            text: "La eliminación ha sido cancelada.",
-            icon: "info",
-            timer: 5000,
-            showConfirmButton: true,
-          });
-        }
-      });
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción eliminará permanentemente el préstamo.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: url,
+          type: "POST",
+          data: {
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+          },
+          success: function (response) {
+            Swal.fire({
+              title: "Eliminado",
+              text: "El préstamo ha sido eliminado correctamente.",
+              icon: "success",
+              timer: 3000,
+              showConfirmButton: false,
+            }).then(() => {
+              location.reload(); // Recargar la página para actualizar la lista
+            });
+          },
+          error: function () {
+            Swal.fire({
+              title: "Error",
+              text: "Hubo un problema al eliminar el préstamo.",
+              icon: "error",
+            });
+          },
+        });
+      }
     });
   });
+});
 </script>
 
 {% endblock %}

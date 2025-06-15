@@ -1,0 +1,20 @@
+{% extends "base_admin.html" %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-danger text-white">
+      <h4 class="mb-0">Confirmar Eliminación</h4>
+    </div>
+    <div class="card-body">
+      <p>¿Estás seguro que deseas eliminar la multa del socio 
+         <strong>{{ multa.socio.nombre }}</strong> asociada al Libro  <strong>{{ multa.prestamo.libro.titulo }}</strong>?</p>
+      
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+        <a href="{% url 'lista_multas' %}" class="btn btn-secondary">Cancelar</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

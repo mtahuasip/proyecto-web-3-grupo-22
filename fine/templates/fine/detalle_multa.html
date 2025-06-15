@@ -1,0 +1,23 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-header bg-dark text-white">
+      <h4 class="mb-0"> Detalle de Multa</h4>
+    </div>
+    <div class="card-body">
+      <p><strong>
+      <i class="bi bi-person-fill"></i> Socio:</strong> {{ multa.socio.nombre }}</p>
+      <p><strong><i class="bi bi-journal-bookmark"></i> Préstamo:</strong> #{{ multa.prestamo.id }}</p>
+      <p><strong><i class="bi bi-currency-exchange"></i> Costo Adicional:</strong> ${{ multa.costo_adicional }}</p>
+      <p><strong><i class="bi bi-pencil-square"></i> Observación:</strong> {{ multa.observacion }}</p>
+      <p><strong><i class="bi bi-book"></i> Libro:</strong> {{ multa.prestamo.libro.titulo }}</p>
+      <div class="d-flex justify-content-between mt-4">
+        <a href="{% url 'lista_multas' %}" class="btn btn-secondary">← Volver</a>
+        <a href="{% url 'editar_multa' multa.id %}" class="btn btn-warning"><i class="bi bi-plus"></i> Editar</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

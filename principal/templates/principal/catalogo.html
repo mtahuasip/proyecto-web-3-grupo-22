@@ -1,0 +1,96 @@
+{% extends 'base_public.html' %} {% block title %} Catalogo | Bookify
+{%endblock%} {% block content %}
+
+<header class="bg-primary text-white text-center py-5 rounded">
+  <div class="container rounded">
+    <h1 class="display-4">Bookify</h1>
+    <p class="lead">
+      Catalogo de libros.<br />
+      Para poder prestarte un libro debes ingresar con tu cuenta.
+    </p>
+    <a href="" class="btn btn-light btn-lg" role="button"> Ingresar </a>
+  </div>
+</header>
+
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Catálogo de Libros</h2>
+
+    {% if libros %}
+    <div class="row">
+      {% for libro in libros %}
+
+      <div class="col-md-4 mb-4">
+        <div class="card shadow border-0 h-100 d-flex flex-column">
+          <div class="d-flex align-items-start">
+            <div class="row g-0 w-100">
+              <div class="col-md-5">
+                <img
+                  src="{{ libro.imagen.url }}"
+                  alt="{{ libro.titulo }}"
+                  class="img-fluid rounded-start object-fit-cover"
+                  style="height: 279px"
+                />
+              </div>
+              <div class="col-md-7 d-flex flex-column">
+                <div class="card-body">
+                  <h5
+                    class="card-title text-truncate"
+                    title="{{ libro.titulo }}"
+                  >
+                    {{ libro.titulo }}
+                  </h5>
+                  <p
+                    class="card-text text-muted mb-1"
+                    title="{{ libro.autor }}"
+                  >
+                    <i class="fa-solid fa-user"></i> {{ libro.autor }}
+                  </p>
+                  <p
+                    class="card-text text-muted mb-2 text-truncate"
+                    title="{{ libro.editorial }}"
+                  >
+                    <i class="fa-solid fa-building"></i> {{ libro.editorial }}
+                  </p>
+                  <p class="card-text small" title="{{ libro.descripcion }}">
+                    {{ libro.descripcion|truncatewords:20 }}
+                  </p>
+                </div>
+
+                <div class="card-footer bg-transparent border-0 mt-auto">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-1"
+                  >
+                    <span class="badge bg-info"> {{ libro.costo }} Bs </span>
+                    {% if libro.disponibilidad %}
+                    <span class="badge bg-success">Disponible</span>
+                    {% else %}
+                    <span class="badge bg-danger">Prestado</span>
+                    {% endif %}
+                  </div>
+                  <a
+                    href="{% url 'catalogo_libro' libro.id %}"
+                    class="btn btn-primary btn-sm w-100"
+                    role="button"
+                  >
+                    Ver más
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center" role="alert">
+      <i class="fas fa-info-circle me-2"></i> No hay libros disponibles
+      actualmente en el catálogo.
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

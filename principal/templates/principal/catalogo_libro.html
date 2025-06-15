@@ -1,0 +1,132 @@
+{% extends 'base_public.html' %} {% block title %}{{ libro.titulo }} |
+Bookify{%endblock%} {% block content %}
+<header class="bg-primary text-white text-center py-5 rounded-0">
+  <div class="container">
+    <h1 class="display-4">Bookify</h1>
+    <p class="lead mb-0">
+      Catálogo de libros.<br />
+      Para poder prestarte un libro debes ingresar con tu cuenta.
+    </p>
+    <a href="" class="btn btn-light btn-lg mt-3">Ingresar</a>
+  </div>
+</header>
+
+<section class="min-vh-100 d-flex align-items-center py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow border-0 h-100 d-flex flex-column">
+          <div class="d-flex align-items-start">
+            <div class="row g-0 w-100">
+              <div class="col-md-5">
+                <img
+                  src="{{ libro.imagen.url }}"
+                  alt="{{ libro.titulo }}"
+                  class="img-fluid rounded-start object-fit-cover"
+                  style="height: 550px"
+                />
+              </div>
+              <div class="col-md-7 d-flex flex-column">
+                <div class="card-body">
+                  <h5 class="card-title fs-2" title="{{ libro.titulo }}">
+                    {{ libro.titulo }}
+                  </h5>
+                  <p
+                    class="card-text text-muted mb-1"
+                    title="{{ libro.autor }}"
+                  >
+                    <i class="fa-solid fa-user"></i> <strong>Autor:</strong>
+                    {{ libro.autor }}
+                  </p>
+                  <p
+                    class="card-text text-muted mb-2"
+                    title="{{ libro.editorial }}"
+                  >
+                    <i class="fa-solid fa-building"></i>
+                    <strong>Editorial:</strong> {{ libro.editorial }}
+                  </p>
+                  <p class="card-text" title="{{ libro.descripcion }}">
+                    {{ libro.descripcion }}
+                  </p>
+                </div>
+
+                <div class="card-footer bg-transparent border-0 mt-auto">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-3"
+                  >
+                    <span class="badge bg-info fs-6">{{ libro.costo }} Bs</span>
+                    {% if libro.disponibilidad %}
+                    <span class="badge bg-success fs-6">Disponible</span>
+                    {% else %}
+                    <span class="badge bg-danger fs-6">Prestado</span>
+                    {% endif %}
+                  </div>
+                  <div
+                    class="d-flex justify-content-between gap-2 align-items-center"
+                  >
+                    {% if libro.disponibilidad %}
+                    <a href="" class="btn btn-primary btn-lg w-100 btn-prestar">
+                      Prestarse
+                    </a>
+                    {% else %}
+                    <button class="btn btn-secondary btn-lg w-100" disabled>
+                      No disponible
+                    </button>
+                    {% endif %}
+                    <a
+                      href="{{ request.META.HTTP_REFERER|default:'/' }}"
+                      class="btn btn-outline-secondary btn-lg w-100"
+                    >
+                      Volver
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    $(".btn-prestar").on("click", function (e) {
+      e.preventDefault();
+      const url = $(this).attr("href");
+
+      Swal.fire({
+        title: "¿Prestarse el libro?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Éxito",
+            text: "El préstamo se realizo con éxito.",
+            icon: "success",
+            timer: 5000,
+            showConfirmButton: true,
+          }).then(() => {
+            window.location.href = url;
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire({
+            title: "Cancelado",
+            text: "Se canceló la operación con éxito.",
+            icon: "info",
+            timer: 5000,
+            showConfirmButton: true,
+          });
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock %}

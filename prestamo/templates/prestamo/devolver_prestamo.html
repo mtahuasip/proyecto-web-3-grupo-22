@@ -4,7 +4,6 @@
 <div class="container">
     <h2>Registrar Devolución</h2>
     
-    <!-- Información del préstamo para dar contexto al usuario -->
     <div class="prestamo-info">
         <p><strong>Libro:</strong> {{ prestamo.libro.titulo }}</p>
         <p><strong>Socio:</strong> {{ prestamo.socio.nombre }}</p>
@@ -12,15 +11,12 @@
         <p><strong>Fecha Límite:</strong> {{ prestamo.fecha_limite }}</p>
     </div>
     
-    <!-- Formulario para ingresar la fecha de devolución -->
     <form method="post">
         {% csrf_token %}
-        <!-- Se renderiza el formulario basado en la clase DevolucionForm -->
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Confirmar Devolución</button>
     </form>
     
-    <!-- Enlace para regresar al detalle del préstamo -->
     <a href="{% url 'detalle_prestamo' prestamo.id %}" class="btn btn-secondary mt-3">Volver al detalle</a>
 </div>
 {% endblock %}

@@ -3,6 +3,7 @@ from django.contrib import messages
 from .models import Prestamo
 from .forms import PrestamoForm
 from datetime import date
+from django.http import JsonResponse
 
 def listar_prestamo(request):
     prestamos = Prestamo.objects.all()
@@ -41,9 +42,7 @@ def eliminar_prestamo(request, prestamo_id):
     prestamo = get_object_or_404(Prestamo, pk=prestamo_id)
     if request.method == "POST":
         prestamo.delete()
-        messages.success(request, "Préstamo eliminado correctamente.")
-        return redirect('listar_prestamo')
-    
+        return JsonResponse({"mensaje": "Préstamo eliminado correctamente."})
     return render(request, 'prestamo/eliminar_prestamo.html', {'prestamo': prestamo})
 
 def devolver_prestamo(request, prestamo_id):

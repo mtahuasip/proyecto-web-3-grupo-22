@@ -2,7 +2,6 @@
 Préstamo{%endblock %} {% block content %}
 <h2>{% if form.instance.pk %}Editar{% else %}Agregar{% endif %} Préstamo</h2>
 <form method="post" class="p-4 border rounded">
-<<<<<<< HEAD
     {% csrf_token %}
     <div class="mb-3">
         <label for="id_libro_id" class="form-label">ID del Libro</label>
@@ -26,32 +25,5 @@ Préstamo{%endblock %} {% block content %}
     </div>{% endcomment %}
     <button type="submit" class="btn btn-success">Guardar</button>
     <a href="{% url 'listar_prestamo' %}" class="btn btn-secondary">Cancelar</a>
-=======
-  {% csrf_token %}
-  <div class="mb-3">
-    <label for="id_libro_id" class="form-label">ID del Libro</label>
-    {{ form.libro_id }}
-  </div>
-  <div class="mb-3">
-    <label for="id_socio_id" class="form-label">ID del Socio</label>
-    {{ form.socio_id }}
-  </div>
-  <div class="mb-3">
-    <label for="id_fecha_devolucion" class="form-label"
-      >Fecha de Devolución</label
-    >
-    {{ form.fecha_devolucion }}
-  </div>
-  <div class="mb-3">
-    <label for="id_fecha_limite" class="form-label">Fecha Límite</label>
-    {{ form.fecha_limite }}
-  </div>
-  <div class="mb-3">
-    <label for="id_costo" class="form-label">Costo</label>
-    {{ form.costo }}
-  </div>
-  <button type="submit" class="btn btn-success">Guardar</button>
-  <a href="{% url 'listar_prestamo' %}" class="btn btn-secondary">Cancelar</a>
->>>>>>> cb033cce4103f31d895518598231fb238cbd645f
 </form>
 {% endblock %}

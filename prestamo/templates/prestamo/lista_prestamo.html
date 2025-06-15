@@ -12,7 +12,7 @@ Bookify{%endblock%} {% block content %}
   <table id="prestamo" class="table table-bordered">
     <thead>
       <tr>
-        <th>ID</th>
+        <!--th>ID</th-->
         <th>Libro</th>
         <th>Socio (ID)</th>
         <th>Fecha de Devolución</th>
@@ -21,39 +21,10 @@ Bookify{%endblock%} {% block content %}
       </tr>
     </thead>
     <tbody>
-<<<<<<< HEAD
-        {% for prestamo in prestamos %}
-        <tr>
-            <td>{{ prestamo.id }}</td>
-            <td>{{ prestamo.libro.titulo }}</td>
-            <td>{{ prestamo.socio.id }}</td>
-            <td>
-                {% if prestamo.fecha_devolucion %}
-                    {{ prestamo.fecha_devolucion }}
-                {% else %}
-                    Pendiente
-                {% endif %}
-            </td>
-            <td>{{ prestamo.fecha_limite }}</td>
-            <td>
-                <a href="{% url 'detalle_prestamo' prestamo.id %}" class="btn btn-info btn-sm">Ver</a>
-                <a href="{% url 'editar_prestamo' prestamo.id %}" class="btn btn-warning btn-sm">Editar</a>
-                <a href="{% url 'eliminar_prestamo' prestamo.id %}" class="btn btn-danger btn-sm">Eliminar</a>
-                {% if not prestamo.fecha_devolucion %}
-                    <a href="{% url 'devolver_prestamo' prestamo.id %}" class="btn btn-secondary btn-sm">Devolver</a>
-                {% else %}
-                    <button class="btn btn-secondary btn-sm" disabled>Cancelado</button>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endblock %}
-=======
+
       {% for prestamo in prestamos %}
       <tr>
-        <td>{{ prestamo.prestamo_id }}</td>
+        <!--<td>{{ prestamo.prestamo_id }}</td>-->
         <td>{{ prestamo.libro.titulo }}</td>
         <td>{{ prestamo.socio.id }}</td>
         <td>{{ prestamo.fecha_devolucion }}</td>
@@ -105,51 +76,58 @@ Bookify{%endblock%} {% block content %}
 </section>
 
 <script>
-  $(document).ready(function () {
-    $("#prestamo").DataTable({
-      language: {
-        url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
-      },
-    });
+ $(document).ready(function () {
+  $("#prestamo").DataTable({
+    language: {
+      url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+    },
+  });
 
-    $(".btn-eliminar").on("click", function (e) {
-      e.preventDefault();
+  $(".btn-eliminar").on("click", function (e) {
+    e.preventDefault();
 
-      const url = $(this).attr("href");
+    const url = $(this).attr("href");
 
-      Swal.fire({
-        title: "¿Estás seguro?",
-        text: "Esta acción eliminará permanentemente el préstamo.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#6c757d",
-        confirmButtonText: "Sí, eliminar",
-        cancelButtonText: "Cancelar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: "Eliminado",
-            text: "El préstamo ha sido eliminado correctamente.",
-            icon: "success",
-            timer: 5000,
-            showConfirmButton: true,
-          }).then(() => {
-            window.location.href = url;
-          });
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire({
-            title: "Cancelado",
-            text: "La eliminación ha sido cancelada.",
-            icon: "info",
-            timer: 5000,
-            showConfirmButton: true,
-          });
-        }
-      });
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción eliminará permanentemente el préstamo.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: url,
+          type: "POST",
+          data: {
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+          },
+          success: function (response) {
+            Swal.fire({
+              title: "Eliminado",
+              text: "El préstamo ha sido eliminado correctamente.",
+              icon: "success",
+              timer: 3000,
+              showConfirmButton: false,
+            }).then(() => {
+              location.reload(); // Recargar la página para actualizar la lista
+            });
+          },
+          error: function () {
+            Swal.fire({
+              title: "Error",
+              text: "Hubo un problema al eliminar el préstamo.",
+              icon: "error",
+            });
+          },
+        });
+      }
     });
   });
+});
 </script>
 
 {% endblock %}
->>>>>>> cb033cce4103f31d895518598231fb238cbd645f

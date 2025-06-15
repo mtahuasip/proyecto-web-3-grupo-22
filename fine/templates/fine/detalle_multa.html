@@ -13,6 +13,11 @@
       <p><strong><i class="bi bi-currency-exchange"></i> Costo Adicional:</strong> ${{ multa.costo_adicional }}</p>
       <p><strong><i class="bi bi-pencil-square"></i> Observación:</strong> {{ multa.observacion }}</p>
       <p><strong><i class="bi bi-book"></i> Libro:</strong> {{ multa.prestamo.libro.titulo }}</p>
+      {% if multa.prestamo.libro.imagen %}
+        <div class="text-center my-3">
+          <img src="{{ multa.prestamo.libro.imagen.url }}" class="img-fluid rounded shadow" style="max-height: 300px;" alt="Portada del libro">
+        </div>
+      {% endif %}
       <div class="d-flex justify-content-between mt-4">
         <a href="{% url 'lista_multas' %}" class="btn btn-secondary">← Volver</a>
         <a href="{% url 'editar_multa' multa.id %}" class="btn btn-warning"><i class="bi bi-plus"></i> Editar</a>

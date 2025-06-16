@@ -1,0 +1,31 @@
+{% extends "base_admin.html" %}
+{% block title %}Detalle del Libro{% endblock %}
+
+{% block content %}
+<h2>Detalle del Libro</h2>
+
+<div class="row">
+  <div class="col-md-4">
+    <img src="{{ libro.imagen.url }}" class="img-fluid rounded border" alt="Portada del libro">
+  </div>
+
+  <div class="col-md-8">
+    <p><strong>Título:</strong> {{ libro.titulo }}</p>
+    <p><strong>Autor:</strong> {{ libro.autor }}</p>
+    <p><strong>Editorial:</strong> {{ libro.editorial }}</p>
+    <p><strong>Código:</strong> {{ libro.codigo }}</p>
+    <p><strong>Descripción:</strong> {{ libro.descripcion }}</p>
+    <p><strong>Disponibilidad:</strong> 
+      {% if libro.disponibilidad %}
+        <span class="badge bg-success">Disponible</span>
+      {% else %}
+        <span class="badge bg-danger">No disponible</span>
+      {% endif %}
+    </p>
+    <p><strong>Costo:</strong> {{ libro.costo }} Bs.</p>
+
+    <a href="{% url 'editar_libro' libro.id %}" class="btn btn-primary mt-2">Editar</a>
+    <a href="{% url 'lista_libros' %}" class="btn btn-secondary mt-2">Volver</a>
+  </div>
+</div>
+{% endblock %}

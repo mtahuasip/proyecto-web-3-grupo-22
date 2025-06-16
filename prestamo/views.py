@@ -4,15 +4,25 @@ from .models import Prestamo
 from .forms import PrestamoForm
 from datetime import date
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required, user_passes_test
 
+def es_admin(user):
+    return not hasattr(user, "socio")
+
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def listar_prestamo(request):
     prestamos = Prestamo.objects.all()
     return render(request, 'prestamo/lista_prestamo.html', {'prestamos': prestamos})
 
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def detalle_prestamo(request, prestamo_id):
     prestamo = get_object_or_404(Prestamo, pk=prestamo_id)
     return render(request, 'prestamo/detalle_prestamo.html', {'prestamo': prestamo})
 
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def agregar_prestamo(request):
     if request.method == "POST":
         form = PrestamoForm(request.POST)
@@ -25,6 +35,8 @@ def agregar_prestamo(request):
         form = PrestamoForm()
     return render(request, 'prestamo/formulario_prestamo.html', {'form': form})
 
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def editar_prestamo(request, prestamo_id):
     prestamo = get_object_or_404(Prestamo, pk=prestamo_id)
     if request.method == "POST":
@@ -38,6 +50,8 @@ def editar_prestamo(request, prestamo_id):
         form = PrestamoForm(instance=prestamo)
     return render(request, 'prestamo/formulario_prestamo.html', {'form': form})
 
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def eliminar_prestamo(request, prestamo_id):
     prestamo = get_object_or_404(Prestamo, pk=prestamo_id)
     if request.method == "POST":
@@ -45,6 +59,8 @@ def eliminar_prestamo(request, prestamo_id):
         return JsonResponse({"mensaje": "Préstamo eliminado correctamente."})
     return render(request, 'prestamo/eliminar_prestamo.html', {'prestamo': prestamo})
 
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def devolver_prestamo(request, prestamo_id):
     prestamo = get_object_or_404(Prestamo, pk=prestamo_id)
     if request.method == "POST":

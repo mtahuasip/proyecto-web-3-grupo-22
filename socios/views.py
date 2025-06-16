@@ -16,6 +16,7 @@ def registrar_socio(request):
         form = SocioForm()
     return render(request, 'socios/registro_socio.html', {'form': form})
 
+
 def lista_socios(request):
     socios = Socio.objects.all()
     return render(request, 'socios/lista_socios.html', {'socios': socios})
@@ -37,9 +38,13 @@ def login_socio(request):
             socio = Socio.objects.get(correo=correo)
             if check_password(contraseña, socio.contraseña):
                 request.session['socio_id'] = socio.id  
-                return redirect('lista_socios')  
+                return redirect('catalogo')  
             else:
                 error = "Contraseña incorrecta"
         except Socio.DoesNotExist:
             error = "Correo no registrado"
     return render(request, 'socios/login.html', {'error': error})
+
+
+
+

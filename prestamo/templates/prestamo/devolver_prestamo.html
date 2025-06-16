@@ -1,22 +1,20 @@
-{% extends 'base.html' %}
-
+{% extends 'base_admin.html' %}
+{% block title %}Confirmar Devolución{% endblock %}
 {% block content %}
-<div class="container">
-    <h2>Registrar Devolución</h2>
-    
-    <div class="prestamo-info">
-        <p><strong>Libro:</strong> {{ prestamo.libro.titulo }}</p>
-        <p><strong>Socio:</strong> {{ prestamo.socio.nombre }}</p>
-        <p><strong>Fecha de Préstamo:</strong> {{ prestamo.fecha_pretamo }}</p>
-        <p><strong>Fecha Límite:</strong> {{ prestamo.fecha_limite }}</p>
-    </div>
-    
+  <div class="container">
+    <h2>¿Confirmas la Devolución?</h2>
+
+    <ul class="list-group mb-3">
+      <li class="list-group-item"><strong>Libro:</strong> {{ prestamo.libro.titulo }}</li>
+      <li class="list-group-item"><strong>Socio:</strong> {{ prestamo.socio.user.first_name }}</li>
+      <li class="list-group-item"><strong>Fecha de Préstamo:</strong> {{ prestamo.fecha_pretamo }}</li>
+      <li class="list-group-item"><strong>Fecha Límite:</strong> {{ prestamo.fecha_limite }}</li>
+    </ul>
+
     <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Confirmar Devolución</button>
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Sí, devolver hoy</button>
+      <a href="{% url 'detalle_prestamo' prestamo.id %}" class="btn btn-secondary">Cancelar</a>
     </form>
-    
-    <a href="{% url 'detalle_prestamo' prestamo.id %}" class="btn btn-secondary mt-3">Volver al detalle</a>
-</div>
+  </div>
 {% endblock %}

@@ -15,6 +15,11 @@ class PrestamoForm(forms.ModelForm):
         label="Socio",
         widget=forms.Select(attrs={'class': 'form-control'})
     )
+    fecha_devolucion = forms.DateField(
+        required=False,  
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        label="Fecha de Devolución"
+    )
 
     class Meta:
         model = Prestamo
@@ -32,6 +37,7 @@ class PrestamoForm(forms.ModelForm):
         prestamo = super().save(commit=False)
         prestamo.libro = self.cleaned_data['libro']
         prestamo.socio = self.cleaned_data['socio']
+        prestamo.fecha_devolucion = self.cleaned_data.get('fecha_devolucion')
         if commit:
             prestamo.save()
         return prestamo

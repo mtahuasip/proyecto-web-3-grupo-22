@@ -59,12 +59,14 @@ def eliminar_prestamo(request, prestamo_id):
         return JsonResponse({"mensaje": "Préstamo eliminado correctamente."})
     return render(request, 'prestamo/eliminar_prestamo.html', {'prestamo': prestamo})
 
+
 @login_required(login_url="admin_login")
 @user_passes_test(es_admin, login_url="/")
 def devolver_prestamo(request, prestamo_id):
     prestamo = get_object_or_404(Prestamo, pk=prestamo_id)
+
     if request.method == "POST":
-        prestamo.fecha_devolucion = request.POST.get('fecha_devolucion') or date.today()
+        prestamo.fecha_devolucion = date.today()
         prestamo.save()
         messages.success(request, "El libro ha sido devuelto correctamente.")
         return redirect('detalle_prestamo', prestamo_id=prestamo.id)

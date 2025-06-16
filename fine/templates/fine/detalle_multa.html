@@ -7,7 +7,8 @@
       <h4 class="mb-0">Detalle de Multa</h4>
     </div>
     <div class="card-body">
-      <p><strong><i class="bi bi-person-fill"></i> Socio:</strong> {{ multa.socio.nombre }}</p>
+      <p><strong><i class="bi bi-person-fill"></i> Socio:</strong> {{ multa.prestamo.socio }}</p>
+      <p><strong><i class="bi bi-envelope-at-fill"></i> Contacto:</strong> {{ multa.socio.user }}</p>
       <p><strong><i class="bi bi-journal-bookmark"></i> Préstamo:</strong> #{{ multa.prestamo.id }}</p>
       <p><strong><i class="bi bi-currency-exchange"></i> Costo Adicional:</strong> ${{ multa.costo_adicional }}</p>
       <p><strong><i class="bi bi-pencil-square"></i> Observación:</strong> {{ multa.observacion }}</p>

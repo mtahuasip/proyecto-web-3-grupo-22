@@ -1,11 +1,13 @@
+from datetime import date, timedelta
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from .forms import SocioRegistroForm, SocioLoginForm
+from .forms import SocioRegistroForm, SocioLoginForm, FechaDevolucionForm
 from Libro.models import Libro
 from socios.models import Socio
+from prestamo.models import Prestamo
 
 
 def es_socio(user):
@@ -23,7 +25,42 @@ def catalogo(request):
 
 def catalogo_libro(request, pk):
     libro = get_object_or_404(Libro, pk=pk)
-    return render(request, "principal/catalogo_libro.html", {"libro": libro})
+    if request.method == "POST":
+        form = FechaDevolucionForm(request.POST)
+        if form.is_valid():
+            fecha_devolucion = form.cleaned_data.get("fecha_devolucion")
+            print(fecha_devolucion)
+            print(libro)
+            socio = request.user.socio
+            print(socio)
+            fecha_limite = date.today() + timedelta(weeks=1)
+            print(fecha_limite)
+            try:
+                prestamo = Prestamo.objects.create(
+                    libro=libro,
+                    socio=socio,
+                    fecha_pretamo=date.today(),
+                    fecha_devolucion=fecha_devolucion,
+                    fecha_limite=fecha_limite,
+                )
+                print(prestamo)
+                libro.disponibilidad = False
+                libro.save()
+
+                messages.success(request, "¡Préstamo realizado con éxito!")
+                return redirect("catalogo_libro", pk=libro.pk)
+            except:
+                print("error")
+    else:
+        form = FechaDevolucionForm()
+    return render(
+        request,
+        "principal/catalogo_libro.html",
+        {
+            "libro": libro,
+            "form": form,
+        },
+    )
 
 
 def socios_login(request):
@@ -48,7 +85,7 @@ def socios_login(request):
                 else:
                     print(f"creando sesión para {username}")
                     login(request, user)
-                    return redirect("socios_inicio")
+                    return redirect("catalogo")
             except User.DoesNotExist:
                 print("Usuario no encontrado.")
 
@@ -94,7 +131,6 @@ def socios_registro(request):
 
 
 @login_required
-@user_passes_test(es_socio)
-def socios_logout(request):
+def usuarios_logout(request):
     logout(request)
-    return redirect("socios_login")
+    return redirect("/")

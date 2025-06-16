@@ -7,5 +7,5 @@ urlpatterns = [
     path("catalogo/libro/<int:pk>/", views.catalogo_libro, name="catalogo_libro"),
     path("socios/registro/", views.socios_registro, name="socios_registro"),
     path("socios/login/", views.socios_login, name="socios_login"),
-    path("socios/logout/", views.socios_logout, name="socios_logout"),
+    path("socios/logout/", views.usuarios_logout, name="usuarios_logout"),
 ]

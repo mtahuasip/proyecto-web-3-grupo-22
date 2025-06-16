@@ -11,8 +11,36 @@
     <div class="text-end text-white">
       <div class="d-flex">
         <div class="d-none d-md-block" style="font-size: 0.8rem">
+          {% if not user.is_authenticated %}
+
           <div>Acceso rápido a tus libros</div>
           <div>Gestión eficiente de préstamos</div>
+
+          {%else%}
+
+          <div class="d-flex align-items-center gap-2">
+            Bienvenid@:
+            <div class="dropdown">
+              <button
+                class="btn btn-outline text-white dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {% if user.first_name and user.last_name %} {{ user.first_name
+                }} {{ user.last_name }} {% else %} {{ user.username }} {%endif%}
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'usuarios_logout' %}">
+                    Cerrar sesión
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          {% endif %}
         </div>
         <button
           id="theme-toggle"

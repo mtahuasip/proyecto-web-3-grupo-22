@@ -1,5 +1,5 @@
 {% extends 'base_public.html' %} {% block title %}{{ libro.titulo }} |
-Bookify{%endblock%} {% block content %}
+Bookify{%endblock%} {% block content %} {% if not user.is_authenticated %}
 <header class="bg-primary text-white text-center py-5 rounded-0">
   <div class="container">
     <h1 class="display-4">Bookify</h1>
@@ -7,9 +7,12 @@ Bookify{%endblock%} {% block content %}
       Catálogo de libros.<br />
       Para poder prestarte un libro debes ingresar con tu cuenta.
     </p>
-    <a href="" class="btn btn-light btn-lg mt-3">Ingresar</a>
+    <a href="{% url 'socios_login' %}" class="btn btn-light btn-lg mt-3">
+      Ingresar
+    </a>
   </div>
 </header>
+{% endif %}
 
 <section class="min-vh-100 d-flex align-items-center py-5">
   <div class="container">
@@ -64,21 +67,44 @@ Bookify{%endblock%} {% block content %}
                   <div
                     class="d-flex justify-content-between gap-2 align-items-center"
                   >
-                    {% if libro.disponibilidad %}
-                    <a href="" class="btn btn-primary btn-lg w-100 btn-prestar">
-                      Prestarse
-                    </a>
+                    {% if user.is_authenticated %} {% if libro.disponibilidad %}
+                    <form id="form-prestamo" method="POST" class="w-100">
+                      {% csrf_token %} {{ form.as_p }}
+                      <div
+                        class="d-flex justify-content-between gap-2 align-items-center"
+                      >
+                        <button
+                          class="btn btn-primary btn-lg w-100"
+                          type="submit"
+                        >
+                          Prestarse
+                        </button>
+                        <a
+                          href="{{ request.META.HTTP_REFERER|default:'/' }}"
+                          class="btn btn-outline-secondary btn-lg w-100"
+                        >
+                          Volver
+                        </a>
+                      </div>
+                    </form>
                     {% else %}
                     <button class="btn btn-secondary btn-lg w-100" disabled>
                       No disponible
                     </button>
-                    {% endif %}
+                    {% endif %} {% else %}
+                    <a
+                      href="{% url 'socios_login' %}"
+                      class="btn btn-light btn-lg w-100"
+                    >
+                      Ingresar
+                    </a>
                     <a
                       href="{{ request.META.HTTP_REFERER|default:'/' }}"
                       class="btn btn-outline-secondary btn-lg w-100"
                     >
                       Volver
                     </a>
+                    {% endif %}
                   </div>
                 </div>
               </div>
@@ -90,37 +116,52 @@ Bookify{%endblock%} {% block content %}
   </div>
 </section>
 
+{% if messages %}
+<div id="flash-messages" data-messages="{{ messages|join:'|' }}"></div>
+{% endif %}
+
 <script>
   $(document).ready(function () {
-    $(".btn-prestar").on("click", function (e) {
+    const flashMessages = $("#flash-messages").data("messages");
+    if (flashMessages) {
+      const messagesArray = flashMessages.split("|");
+      messagesArray.forEach(function (msg) {
+        Swal.fire({
+          title: "Éxito",
+          text: msg,
+          icon: "success",
+          confirmButtonColor: "#0d6efd",
+          confirmButtonText: "Aceptar",
+        });
+      });
+    }
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $("#form-prestamo").on("submit", function (e) {
       e.preventDefault();
-      const url = $(this).attr("href");
+      const form = this;
 
       Swal.fire({
         title: "¿Prestarse el libro?",
+        text: "Confirma la solicitud del préstamo.",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#d33",
+        confirmButtonColor: "#0d6efd",
         cancelButtonColor: "#6c757d",
-        confirmButtonText: "Sí, eliminar",
+        confirmButtonText: "Sí, prestarme",
         cancelButtonText: "Cancelar",
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            title: "Éxito",
-            text: "El préstamo se realizo con éxito.",
-            icon: "success",
-            timer: 5000,
-            showConfirmButton: true,
-          }).then(() => {
-            window.location.href = url;
-          });
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          form.submit();
+        } else {
           Swal.fire({
             title: "Cancelado",
-            text: "Se canceló la operación con éxito.",
+            text: "No se realizó el préstamo.",
             icon: "info",
-            timer: 5000,
+            timer: 3000,
             showConfirmButton: true,
           });
         }

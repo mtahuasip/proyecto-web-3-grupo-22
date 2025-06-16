@@ -1,6 +1,5 @@
 {% extends 'base_public.html' %} {% block title %} Catalogo | Bookify
-{%endblock%} {% block content %}
-
+{%endblock%} {% block content %} {% if not user.is_authenticated %}
 <header class="bg-primary text-white text-center py-5 rounded">
   <div class="container rounded">
     <h1 class="display-4">Bookify</h1>
@@ -8,9 +7,16 @@
       Catalogo de libros.<br />
       Para poder prestarte un libro debes ingresar con tu cuenta.
     </p>
-    <a href="" class="btn btn-light btn-lg" role="button"> Ingresar </a>
+    <a
+      href="{% url 'socios_login' %}"
+      class="btn btn-light btn-lg"
+      role="button"
+    >
+      Ingresar
+    </a>
   </div>
 </header>
+{% endif %}
 
 <section class="py-5">
   <div class="container">

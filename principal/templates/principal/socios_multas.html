@@ -1,0 +1,29 @@
+{% extends 'base_public.html' %} {% block title %}Multas | Bookify{% endblock %}
+{% block content %}
+
+<section class="min-vh-100 py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Mis Multas</h2>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        {% if multas %}
+        <ul class="list-group shadow">
+          {% for multa in multas %}
+          <li class="list-group-item">
+            <strong>Libro:</strong> {{ multa.prestamo.libro.titulo }}<br />
+            <strong>Costo adicional:</strong> ${{ multa.costo_adicional }}<br />
+            <strong>Observación:</strong> {{ multa.observacion }}
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <div class="alert alert-info text-center" role="alert">
+          No tienes multas registradas.
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -8,6 +8,7 @@ from .forms import SocioRegistroForm, SocioLoginForm, FechaDevolucionForm
 from Libro.models import Libro
 from socios.models import Socio
 from prestamo.models import Prestamo
+from fine.models import Multa
 
 
 def es_socio(user):
@@ -33,7 +34,7 @@ def catalogo_libro(request, pk):
             print(libro)
             socio = request.user.socio
             print(socio)
-            fecha_limite = date.today() + timedelta(weeks=1)
+            fecha_limite = fecha_devolucion + timedelta(weeks=1)
             print(fecha_limite)
             try:
                 prestamo = Prestamo.objects.create(
@@ -134,3 +135,17 @@ def socios_registro(request):
 def usuarios_logout(request):
     logout(request)
     return redirect("/")
+
+
+def socios_prestamos(request):
+    socio = Socio.objects.get(user=request.user)
+    prestamos = Prestamo.objects.filter(socio=socio).select_related("libro")
+
+    return render(request, "principal/socios_prestamos.html", {"prestamos": prestamos})
+
+
+def socios_multas(request):
+    socio = Socio.objects.get(user=request.user)
+    multas = Multa.objects.filter(socio=socio).select_related("prestamo__libro")
+
+    return render(request, "principal/socios_multas.html", {"multas": multas})

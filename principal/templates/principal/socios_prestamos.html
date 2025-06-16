@@ -1,0 +1,31 @@
+{% extends 'base_public.html' %} {% block title %}Préstamos |
+Bookify{%endblock%} {% block content %}
+
+<section class="min-vh-100 py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Mis Préstamos</h2>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        {% if prestamos %}
+        <ul class="list-group shadow">
+          {% for prestamo in prestamos %}
+          <li class="list-group-item">
+            <strong>Libro:</strong> {{ prestamo.libro.titulo }}<br />
+            <strong>Fecha del préstamo:</strong> {{ prestamo.fecha_pretamo }}<br />
+            <strong>Fecha límite:</strong> {{ prestamo.fecha_limite }}<br />
+            <strong>Fecha de devolución:</strong>
+            {{ prestamo.fecha_devolucion|default:"Aún no devuelto" }}
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <div class="alert alert-info text-center" role="alert">
+          No tienes préstamos registrados.
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

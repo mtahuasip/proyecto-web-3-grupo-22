@@ -25,7 +25,7 @@
       {% for multa in multas %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td>{{ multa.socio.nombre }}</td>
+        <td>{{ multa.socio.id }}</td>
         <td>{{ multa.prestamo.id }}</td>
         <td>${{ multa.costo_adicional }}</td>
         <td>{{ multa.observacion }}</td>

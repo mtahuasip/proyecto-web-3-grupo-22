@@ -2,10 +2,16 @@ from django.shortcuts import render, get_object_or_404, redirect
 from fine.models import Multa
 from .forms import MultaForm
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseForbidden
 
 
+def es_admin(user):
+    return not hasattr(user, "socio")
+
+
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def lista_multas(request):
     query = request.GET.get("q")  # Obtiene el término de búsqueda del query string
     if query:

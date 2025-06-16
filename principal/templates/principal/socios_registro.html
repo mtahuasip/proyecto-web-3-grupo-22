@@ -19,7 +19,12 @@ digital{%endblock %} {% block content %}
 
               <div class="text-center mt-3">
                 <span>¿Ya tienes una cuenta?</span>
-                <a href="{% url 'socios_login' %}">Inicia sesión</a>
+                <a
+                  class="link-offset-2 link-underline link-underline-opacity-0"
+                  href="{% url 'socios_login' %}"
+                >
+                  Inicia sesión
+                </a>
               </div>
             </form>
           </div>

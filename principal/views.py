@@ -20,7 +20,16 @@ def es_socio(user):
     return hasattr(user, "socio")
 
 
+def es_admin(user):
+    return not hasattr(user, "socio")
+
+
 def inicio(request):
+    if request.user.is_authenticated:
+        if hasattr(request.user, "socio"):
+            return redirect("catalogo")
+        else:
+            return redirect("lista_libros")
     return render(request, "principal/inicio.html")
 
 
@@ -70,6 +79,11 @@ def catalogo_libro(request, pk):
 
 
 def admin_login(request):
+    if request.user.is_authenticated:
+        if hasattr(request.user, "socio"):
+            return redirect("catalogo")
+        else:
+            return redirect("lista_libros")
     if request.method == "POST":
         form = AdminLoginForm(request.POST)
         if form.is_valid():
@@ -79,11 +93,17 @@ def admin_login(request):
                 username = User.objects.get(username=username)
                 print("usuario encontrado")
                 print(username)
-
                 user = authenticate(username=username, password=password)
+
                 if not user:
                     print("Credenciales inválidas.")
                 else:
+                    if hasattr(user, "socio"):
+                        messages.error(
+                            request,
+                            "No tiene autorización para acceder como administrador.",
+                        )
+                        return redirect("admin_login")
                     print(f"creando sesión para {username}")
                     login(request, user)
                     return redirect("lista_libros")
@@ -100,6 +120,11 @@ def admin_login(request):
 
 
 def socios_login(request):
+    if request.user.is_authenticated:
+        if hasattr(request.user, "socio"):
+            return redirect("catalogo")
+        else:
+            return redirect("lista_libros")
     if request.method == "POST":
         form = SocioLoginForm(request.POST)
         if form.is_valid():
@@ -119,12 +144,17 @@ def socios_login(request):
                 if not user:
                     print("Credenciales inválidas.")
                 else:
+                    if not hasattr(user, "socio"):
+                        messages.error(request, "Este usuario no es un socio.")
+                        return redirect("socios_login")
+
                     print(f"creando sesión para {username}")
                     login(request, user)
                     return redirect("catalogo")
             except User.DoesNotExist:
                 print("Usuario no encontrado.")
-                return redirect("lista_libros")
+                messages.error(request, "Este usuario no es un socio.")
+                return redirect("socios_login")
 
         else:
             print("invalid")
@@ -136,6 +166,11 @@ def socios_login(request):
 
 
 def socios_registro(request):
+    if request.user.is_authenticated:
+        if hasattr(request.user, "socio"):
+            return redirect("catalogo")
+        else:
+            return redirect("lista_libros")
     if request.method == "POST":
         form = SocioRegistroForm(request.POST)
         if form.is_valid():
@@ -167,12 +202,14 @@ def socios_registro(request):
     return render(request, "principal/socios_registro.html", {"form": form})
 
 
-@login_required
+@login_required(login_url="/")
 def usuarios_logout(request):
     logout(request)
     return redirect("/")
 
 
+@login_required(login_url="socios_login")
+@user_passes_test(es_socio, login_url="socios_login")
 def socios_prestamos(request):
     socio = Socio.objects.get(user=request.user)
     prestamos = Prestamo.objects.filter(socio=socio).select_related("libro")
@@ -180,6 +217,8 @@ def socios_prestamos(request):
     return render(request, "principal/socios_prestamos.html", {"prestamos": prestamos})
 
 
+@login_required(login_url="socios_login")
+@user_passes_test(es_socio, login_url="socios_login")
 def socios_multas(request):
     socio = Socio.objects.get(user=request.user)
     multas = Multa.objects.filter(socio=socio).select_related("prestamo__libro")

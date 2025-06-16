@@ -1,9 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Libro
 from .forms import LibroForm
-from django.contrib import messages
 
 
+def es_admin(user):
+    return not hasattr(user, "socio")
+
+
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def lista_libros(request):
     libros = Libro.objects.all()
     return render(request, "libro/lista_libros.html", {"libros": libros})

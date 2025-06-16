@@ -15,7 +15,8 @@ class SocioRegistroForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"class": "form-control w-100"}),
     )
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={"class": "form-control w-100"})
+        label="Correo electrónico",
+        widget=forms.EmailInput(attrs={"class": "form-control w-100"}),
     )
     password = forms.CharField(
         label="Contraseña",
@@ -49,19 +50,23 @@ class SocioRegistroForm(forms.ModelForm):
 
 class SocioLoginForm(forms.Form):
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={"class": "form-control w-100"})
+        label="Correo electrónico",
+        widget=forms.EmailInput(attrs={"class": "form-control w-100"}),
     )
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"class": "form-control w-100"})
+        label="Contraseña",
+        widget=forms.PasswordInput(attrs={"class": "form-control w-100"}),
     )
 
 
 class AdminLoginForm(forms.Form):
     username = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control w-100"})
+        label="Nombre de usuario",
+        widget=forms.TextInput(attrs={"class": "form-control w-100"}),
     )
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"class": "form-control w-100"})
+        label="Contraseña",
+        widget=forms.PasswordInput(attrs={"class": "form-control w-100"}),
     )
 
 

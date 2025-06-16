@@ -10,11 +10,18 @@ digital{%endblock %} {% block content %}
             <form method="post" novalidate>
               {% csrf_token %} {{ form.as_p }}
 
-              <div
-                class="d-flex justify-content-between align-items-center mt-4"
-              >
-                <button class="btn btn-primary" type="submit">Ingresar</button>
-                <a href="{% url 'socios_registro' %}">Crear cuenta</a>
+              <button class="btn btn-primary w-100" type="submit">
+                Ingresar
+              </button>
+
+              <div class="text-center mt-4">
+                ¿No tienes una cuenta?
+                <a
+                  class="link-offset-2 link-underline link-underline-opacity-0"
+                  href="{% url 'socios_registro' %}"
+                >
+                  Crear cuenta
+                </a>
               </div>
             </form>
           </div>

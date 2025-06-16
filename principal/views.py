@@ -4,7 +4,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from .forms import SocioRegistroForm, SocioLoginForm, FechaDevolucionForm
+from .forms import (
+    SocioRegistroForm,
+    SocioLoginForm,
+    FechaDevolucionForm,
+    AdminLoginForm,
+)
 from Libro.models import Libro
 from socios.models import Socio
 from prestamo.models import Prestamo
@@ -64,6 +69,36 @@ def catalogo_libro(request, pk):
     )
 
 
+def admin_login(request):
+    if request.method == "POST":
+        form = AdminLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            try:
+                username = User.objects.get(username=username)
+                print("usuario encontrado")
+                print(username)
+
+                user = authenticate(username=username, password=password)
+                if not user:
+                    print("Credenciales inválidas.")
+                else:
+                    print(f"creando sesión para {username}")
+                    login(request, user)
+                    return redirect("lista_libros")
+            except User.DoesNotExist:
+                print("Usuario no encontrado.")
+                return redirect("admin_login")
+        else:
+            print("invalid")
+            print(form)
+            print(form.cleaned_data["password"])
+    else:
+        form = AdminLoginForm()
+    return render(request, "principal/admin_login.html", {"form": form})
+
+
 def socios_login(request):
     if request.method == "POST":
         form = SocioLoginForm(request.POST)
@@ -89,6 +124,7 @@ def socios_login(request):
                     return redirect("catalogo")
             except User.DoesNotExist:
                 print("Usuario no encontrado.")
+                return redirect("lista_libros")
 
         else:
             print("invalid")

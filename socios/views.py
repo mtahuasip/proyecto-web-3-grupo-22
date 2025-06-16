@@ -20,9 +20,9 @@ def registrar_socio(request):
 
 
 def lista_socios(request):
-    pass
-    # socios = Socio.objects.all()
-    # return render(request, 'socios/lista_socios.html', {'socios': socios})
+    
+    socios = Socio.objects.all()
+    return render(request, 'socios/lista_socios.html', {'socios': socios})
 
 
 def eliminar_socio(request, socio_id):

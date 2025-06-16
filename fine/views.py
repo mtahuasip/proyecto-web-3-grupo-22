@@ -20,13 +20,15 @@ def lista_multas(request):
         multas = Multa.objects.all()
     return render(request, "fine/lista_multas.html", {"multas": multas, "query": query})
 
-
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def detalle_multa(request, id):
     multa = get_object_or_404(Multa, pk=id)
     return render(request, "fine/detalle_multa.html", {"multa": multa})
 
 
-@login_required
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def crear_multa(request):
     if not request.user.is_staff and not request.user.is_superuser:
         return HttpResponseForbidden("No tienes permiso para acceder a esta página.")
@@ -43,8 +45,8 @@ def crear_multa(request):
         request, "fine/formulario_multa.html", {"form": form, "accion": "Crear"}
     )
 
-
-@login_required
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def editar_multa(request, id):
     if not request.user.is_staff and not request.user.is_superuser:
         return HttpResponseForbidden("No tienes permiso para acceder a esta página.")
@@ -62,8 +64,8 @@ def editar_multa(request, id):
         request, "fine/formulario_multa.html", {"form": form, "accion": "Editar"}
     )
 
-
-@login_required
+@login_required(login_url="admin_login")
+@user_passes_test(es_admin, login_url="/")
 def eliminar_multa(request, id):
     if not request.user.is_staff and not request.user.is_superuser:
         return HttpResponseForbidden("No tienes permiso para acceder a esta página.")

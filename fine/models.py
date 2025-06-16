@@ -16,7 +16,7 @@ class Multa(models.Model):
     observacion = models.TextField()
 
     def __str__(self):
-        socio_nombre = self.socio.nombre if self.socio else "Sin socio"
+        socio_nombre = self.socio.user.get_full_name() if self.socio else "Sin socio"
         libro_titulo = (
             self.prestamo.libro.titulo
             if self.prestamo and self.prestamo.libro

@@ -1,0 +1,16 @@
+{% extends "base_admin.html" %}
+{% block title %}Detalle del Socio{% endblock %}
+
+{% block content %}
+<h2>Detalle del Socio</h2>
+
+<p><strong>Nombre:</strong> {{ socio.user.first_name }} {{ socio.user.last_name }}</p>
+<p><strong>Cédula de Identidad (CI):</strong> {{ socio.ci }}</p>
+<p><strong>Correo:</strong> {{ socio.user.email }}</p>
+<p><strong>Dirección:</strong> {{ socio.direccion }}</p>
+<p><strong>Celular:</strong> {{ socio.celular }}</p>
+
+<a href="{% url 'editar_socio' socio.pk %}" class="btn btn-primary">Editar Socio</a>
+<a href="{% url 'eliminar_socio' socio.pk %}" class="btn btn-danger">Eliminar Socio</a>
+<a href="{% url 'lista_socios' %}" class="btn btn-secondary">Volver a la lista</a>
+{% endblock %}

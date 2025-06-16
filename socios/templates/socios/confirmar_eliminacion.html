@@ -1,0 +1,21 @@
+{% extends "base_admin.html" %}
+{% block title %}Eliminar Socio{% endblock %}
+
+{% block content %}
+<h2>Eliminar Socio</h2>
+<p>Estás a punto de eliminar al siguiente socio:</p>
+
+<ul class="list-group">
+  <li class="list-group-item"><strong>Nombre:</strong> {{ socio.nombre }}</li>
+  <li class="list-group-item"><strong>CI:</strong> {{ socio.ci }}</li>
+  <li class="list-group-item"><strong>Correo:</strong> {{ socio.correo }}</li>
+  <li class="list-group-item"><strong>Dirección:</strong> {{ socio.direccion }}</li>
+  <li class="list-group-item"><strong>Celular:</strong> {{ socio.celular }}</li>
+</ul>
+
+<form method="post" class="mt-4">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+  <a href="{% url 'detalle_socio' socio.pk %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

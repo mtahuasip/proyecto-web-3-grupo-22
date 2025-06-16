@@ -1,53 +1,43 @@
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect
 from .models import Socio
-from .forms import SocioForm
-
-
-def registrar_socio(request):
-    pass
-    # if request.method == 'POST':
-    #     form = SocioForm(request.POST)
-    #     if form.is_valid():
-    #         socio = form.save(commit=False)
-    #         socio.contraseña = make_password(socio.contraseña)
-    #         socio.save()
-    #         return redirect('login_socio')
-    # else:
-    #     form = SocioForm()
-    # return render(request, 'socios/registro_socio.html', {'form': form})
-
-
+from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
+from .forms import SocioEditarForm  
+from django.contrib.auth.decorators import user_passes_test
+    
+def es_superusuario(user):
+    return user.is_superuser
+@user_passes_test(es_superusuario)
 def lista_socios(request):
     
     socios = Socio.objects.all()
     return render(request, 'socios/lista_socios.html', {'socios': socios})
 
+@user_passes_test(es_superusuario)
+def detalle_socio(request, pk):
+    socio = get_object_or_404(Socio, pk=pk)
+    return render(request, 'socios/detalle_socio.html', {'socio': socio})
 
-def eliminar_socio(request, socio_id):
-    pass
-    # try:
-    #     socio = Socio.objects.get(id=socio_id)
-    #     socio.delete()
-    #     return redirect('lista_socios')
-    # except Socio.DoesNotExist:
-    #     return redirect('lista_socios')
+@user_passes_test(es_superusuario)
+def eliminar_socio(request, pk):
+    socio = get_object_or_404(Socio, pk=pk)
+    if request.method == "POST":
+        socio.delete()
+        messages.success(request, "Socio eliminado correctamente.")
+        return redirect('lista_socios') 
+    return render(request, 'socios/confirmar_eliminacion.html', {'socio': socio})
 
+@user_passes_test(es_superusuario)
+def editar_socio(request, pk):
+    socio = get_object_or_404(Socio, pk=pk)
 
-def login_socio(request):
-    pass
-    # error = ""
-    # if request.method == 'POST':
-    #     correo = request.POST['correo']
-    #     contraseña = request.POST['contraseña']
-    #     try:
-    #         socio = Socio.objects.get(correo=correo)
-    #         if check_password(contraseña, socio.contraseña):
-    #             request.session['socio_id'] = socio.id
-    #             return redirect('catalogo')
-    #         else:
-    #             error = "Contraseña incorrecta"
-    #     except Socio.DoesNotExist:
-    #         error = "Correo no registrado"
-    # return render(request, 'socios/login.html', {'error': error})
+    if request.method == 'POST':
+        form = SocioEditarForm(request.POST, instance=socio)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Socio actualizado correctamente.')
+            return redirect('detalle_socio', pk=socio.pk)
+    else:
+        form = SocioEditarForm(instance=socio)
+
+    return render(request, 'socios/editar_socio.html', {'form': form, 'socio': socio})
